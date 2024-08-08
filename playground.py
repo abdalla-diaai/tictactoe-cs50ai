@@ -15,9 +15,9 @@ def initial_state():
 
 import numpy as np
 
-board = [       [O, X, X],
+board = [       [X, EMPTY, X],
             [EMPTY, EMPTY, X],
-            [O, O, O]]
+            [O, EMPTY, O]]
 
 def winner(board):
     """
@@ -26,26 +26,41 @@ def winner(board):
     board = np.array(board)
     diagonal_board_1 = board.diagonal()
     diagonal_board_2 = np.fliplr(board).diagonal()
-
+    
     if all (i == diagonal_board_1[0] for i in diagonal_board_1):
-        print("diagonal 1")
-        return diagonal_board_1[0]
+        if diagonal_board_1[0] != EMPTY:
+            print("diagonal 1")
+            return diagonal_board_1[0]
     if all (i == diagonal_board_2[0] for i in diagonal_board_2):
-        print("diagonal 2")
-
-        return diagonal_board_2[0]
+        if diagonal_board_2[0] != EMPTY:
+            print("diagonal 2")
+            return diagonal_board_2[0]
     else:
         for i in range(len(board)):
             if board[i][0] == board[i][1] == board[i][2]:
-                print("row")
-
-                return board[i][0]
+                if board[i][0] != EMPTY:
+                    return board[i][0]
                 
             if board[0][i] == board[1][i] == board[2][i]:
-                print("column")
-                return board[0][i]
+                if board[0][i] != EMPTY:
+                    print("column")
+                    return board[0][i]
     return None
 
 
-print(winner(board))
+
         
+def utility(board):
+    """
+    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
+    """
+    output = winner(board)
+    if output == "X":
+        return 1
+    elif output == "O":
+        return -1
+    else:
+        return 0
+    
+print(winner(board))
+print(utility(board))
