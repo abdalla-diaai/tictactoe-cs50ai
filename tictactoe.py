@@ -1,7 +1,6 @@
 """
 Tic Tac Toe Player
 """
-
 import math
 import numpy as np
 
@@ -22,13 +21,15 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
+    count = counter(board)
     if terminal(board):
         return None
     elif board == initial_state():
         return "X"
-    
-    raise NotImplementedError
-
+    if count[X] == count[O]:
+        print(X)
+    else:
+        print(O)
 
 def actions(board):
     """
@@ -104,3 +105,17 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     raise NotImplementedError
+
+
+def counter(board):
+    """
+    Returns a dictionary with the count of both X and O.
+    """
+    count = {X: 0, O: 0}
+    for i in range(0, len(board)):
+        for j in range(0, len(board)):
+            if board[i][j] == X:
+                count[X] += 1
+            elif board[i][j] == O:
+                count[O] += 1
+    return count
