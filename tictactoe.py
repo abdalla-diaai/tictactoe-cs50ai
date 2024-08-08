@@ -1,6 +1,7 @@
 """
 Tic Tac Toe Player
 """
+from copy import deepcopy
 import math
 import numpy as np
 
@@ -25,11 +26,11 @@ def player(board):
     if terminal(board):
         return None
     elif board == initial_state():
-        return "X"
+        return X
     if count[X] == count[O]:
-        print(X)
+        return X
     else:
-        print(O)
+        return O
 
 def actions(board):
     """
@@ -46,8 +47,13 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
-
+    board_copy = deepcopy(board)
+    current_player = player(board_copy)
+    if board_copy[action[0]][action[1]] != EMPTY:
+        raise ValueError("In valid move!")
+    else:
+        board_copy[action[0]][action[1]] = current_player
+        return board_copy
 
 def winner(board):
     """
@@ -109,7 +115,8 @@ def minimax(board):
 
 def counter(board):
     """
-    Returns a dictionary with the count of both X and O.
+    Helper function.
+    Returns the count of both X and O.
     """
     count = {X: 0, O: 0}
     for i in range(0, len(board)):
