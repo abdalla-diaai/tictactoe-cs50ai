@@ -15,9 +15,9 @@ def initial_state():
 
 import numpy as np
 
-board = [       [X, EMPTY, X],
-            [EMPTY, EMPTY, X],
-            [O, EMPTY, O]]
+board = [       [X, O, X],
+               [X, O, X],
+                [O, X, O]]
 
 def winner(board):
     """
@@ -62,5 +62,14 @@ def utility(board):
     else:
         return 0
     
-print(winner(board))
-print(utility(board))
+def terminal(board):
+    """
+    Returns True if game is over, False otherwise.
+    """
+    if winner(board) == X or winner(board) == O or EMPTY not in np.array(board):
+        print(winner(board))
+        return True
+    return False
+
+
+print(terminal(board))

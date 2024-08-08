@@ -81,7 +81,9 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    if winner(board) == X or winner(board) == O or EMPTY not in np.array(board):
+        return True
+    return False
 
 
 def utility(board):
