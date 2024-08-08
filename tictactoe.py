@@ -65,11 +65,9 @@ def winner(board):
     
     if all (i == diagonal_board_1[0] for i in diagonal_board_1):
         if diagonal_board_1[0] != EMPTY:
-            print("diagonal 1")
             return diagonal_board_1[0]
     if all (i == diagonal_board_2[0] for i in diagonal_board_2):
         if diagonal_board_2[0] != EMPTY:
-            print("diagonal 2")
             return diagonal_board_2[0]
     else:
         for i in range(len(board)):
@@ -79,7 +77,6 @@ def winner(board):
                 
             if board[0][i] == board[1][i] == board[2][i]:
                 if board[0][i] != EMPTY:
-                    print("column")
                     return board[0][i]
     return None
 
@@ -110,13 +107,51 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+    if player(board) == X:
+        score = -math.inf
+        action_to_take = None
+        for action in actions(board):
+            min_val = minvalue(result(board, action))
+            if min_val > score:
+                score = min_val
+                action_to_take = action
+        return action_to_take
+    elif player(board) == O:
+        score = math.inf
+        action_to_take = None
+        for action in actions(board):
+            max_val = maxvalue(result(board, action))
+            if max_val < score:
+                score = max_val
+                action_to_take = action
+        return action_to_take
+    
+def minvalue(board):
+    # if game over, return the utility of state
+    if terminal(board):
+        return utility(board)
+    # iterate over the available actions and return the minimum out of all maximums
+    max_value = math.inf  
+    for action in actions(board):
+        max_value = min(max_value, maxvalue(result(board, action)))
+    return max_value
 
+def maxvalue(board):
+    # if game over, return the utility of state
+    if terminal(board):
+        return utility(board)
+    # iterate over the available actions and return the maximum out of all minimums
+    min_val = -math.inf
+    for action in actions(board):
+        min_val = max(min_val, minvalue(result(board, action)))
+    return min_val
 
 def counter(board):
     """
     Helper function.
-    Returns the count of both X and O.
+    Returns the count of both X and O and determine the player to play.
     """
     count = {X: 0, O: 0}
     for i in range(0, len(board)):
