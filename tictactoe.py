@@ -108,7 +108,7 @@ def utility(board):
 
 def minimax(board):
     """
-    Returns the optimal action for the current player on the board.
+    Returns the optimal action for the current player on the board by calling minval and maxval functions for both players till terminal state is reached.
     """
     if terminal(board):
         return None
