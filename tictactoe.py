@@ -1,6 +1,7 @@
 """
 Tic Tac Toe Player
 """
+
 from copy import deepcopy
 import math
 import numpy as np
@@ -9,13 +10,12 @@ X = "X"
 O = "O"
 EMPTY = None
 
+
 def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+    return [[EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY]]
 
 
 def player(board):
@@ -32,6 +32,7 @@ def player(board):
     else:
         return O
 
+
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
@@ -42,6 +43,7 @@ def actions(board):
             if board[i][j] == EMPTY:
                 possible_moves.add((i, j))
     return possible_moves
+
 
 def result(board, action):
     """
@@ -55,6 +57,7 @@ def result(board, action):
         board_copy[action[0]][action[1]] = current_player
         return board_copy
 
+
 def winner(board):
     """
     Returns the winner of the game, if there is one.
@@ -62,11 +65,11 @@ def winner(board):
     board = np.array(board)
     diagonal_board_1 = board.diagonal()
     diagonal_board_2 = np.fliplr(board).diagonal()
-    
-    if all (i == diagonal_board_1[0] for i in diagonal_board_1):
+
+    if all(i == diagonal_board_1[0] for i in diagonal_board_1):
         if diagonal_board_1[0] != EMPTY:
             return diagonal_board_1[0]
-    if all (i == diagonal_board_2[0] for i in diagonal_board_2):
+    if all(i == diagonal_board_2[0] for i in diagonal_board_2):
         if diagonal_board_2[0] != EMPTY:
             return diagonal_board_2[0]
     else:
@@ -74,7 +77,7 @@ def winner(board):
             if board[i][0] == board[i][1] == board[i][2]:
                 if board[i][0] != EMPTY:
                     return board[i][0]
-                
+
             if board[0][i] == board[1][i] == board[2][i]:
                 if board[0][i] != EMPTY:
                     return board[0][i]
@@ -127,26 +130,37 @@ def minimax(board):
                 score = max_val
                 action_to_take = action
         return action_to_take
-    
+
+
 def minvalue(board):
+    """
+    Returns minimum value for the min player in comparison to the max player
+    """
     # if game over, return the utility of state
     if terminal(board):
         return utility(board)
     # iterate over the available actions and return the minimum out of all maximums
-    max_value = math.inf  
+    max_value = math.inf
     for action in actions(board):
+        # minvalue call maxvalue till we get to a state and return value for this state
         max_value = min(max_value, maxvalue(result(board, action)))
     return max_value
 
+
 def maxvalue(board):
+    """
+    Returns maximum value for the max player in comparison to the min player
+    """
     # if game over, return the utility of state
     if terminal(board):
         return utility(board)
     # iterate over the available actions and return the maximum out of all minimums
     min_val = -math.inf
     for action in actions(board):
+        # maxvalue call minvalue till we get to a state and return value for this state
         min_val = max(min_val, minvalue(result(board, action)))
     return min_val
+
 
 def counter(board):
     """
