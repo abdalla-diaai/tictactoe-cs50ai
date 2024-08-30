@@ -1,4 +1,3 @@
-import numpy as np
 from tictactoe import *
 EMPTY = None
 X = "X"
@@ -10,4 +9,4 @@ board = [
     [O,X , EMPTY]
     ]
 
-print(result(board, (2,2)))
+print(result(board, (3,3)))

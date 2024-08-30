@@ -51,12 +51,16 @@ def result(board, action):
     """
     board_copy = deepcopy(board)
     current_player = player(board_copy)
-    if board_copy[action[0]][action[1]] != EMPTY:
-        raise ValueError("In valid move!")
-    else:
+    
+    try:
+        if board_copy[action[0]][action[1]] != EMPTY or action[0] < 0 or action[1] < 0:
+            raise ValueError("In valid move!")
         board_copy[action[0]][action[1]] = current_player
         return board_copy
-
+    except TypeError:
+        raise TypeError("In valid move!")
+    except IndexError:
+        raise IndexError("In valid move!")
 
 def winner(board):
     """
